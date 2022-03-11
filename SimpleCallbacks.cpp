@@ -108,9 +108,25 @@ void keyboard(unsigned char c, int x, int y) {
         state.c = Cube();
         break;
       }
+      case 's': {
+        state.mode = AppState::SOLVE;
+        state.steps = state.c.solve();
+        state.stepIdx = 0;
+      }
       default:
         std::cout << "Unhandled keypress in interactive mode '" << c << "'\n";
         break;
     }
+  } else if (state.mode == AppState::SOLVE) {
+    switch (c) {
+      case 's': {
+        state.mode = AppState::INTERACTIVE;
+        state.steps.clear();
+      }
+      default:
+        std::cout << "Unhandled keypress in solve mode '" << c << "'\n";
+        break;
+    }
+
   }
 }

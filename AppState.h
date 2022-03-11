@@ -4,7 +4,7 @@
 #include "Cube.h"
 
 struct AppState {
-  AppState() : windowId(-1), mode(INTERACTIVE), c(), rotX(180), rotY(0),
+  AppState() : windowId(-1), mode(INTERACTIVE), c(), steps(), stepIdx(), rotX(180), rotY(0),
                prevMouseX(0), prevMouseY(0) {}
 
   // Modes that the app can be in.
@@ -20,6 +20,12 @@ struct AppState {
 
   // The cube being rendered.
   Cube c;
+
+  // The list of steps to solving the cube.
+  std::vector<Cube> steps;
+
+  // The solution step currently being shown.
+  std::size_t stepIdx;
 
   // The current rotation around the x and y axes.
   double rotX;

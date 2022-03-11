@@ -58,6 +58,9 @@ public:
   Cube();
 
   void rotate(Face face, Direction rotDir);
+  std::vector<Cube> solve();
+  bool operator==(const Cube &other);
+  std::size_t dist(const Cube &other) const;
 
   static const ColorMap colorMap;
   static const RotMap rotMap;

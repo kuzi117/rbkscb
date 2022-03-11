@@ -178,6 +178,64 @@ void Cube::rotate(Face face, enum Direction rotDir) {
   }
 }
 
+struct CubeCompare {
+  explicit CubeCompare(Cube c) : c(c) {}
+  CubeCompare() : c() {}
+
+  bool operator()(const Cube &a, const Cube &b) {
+    std::size_t aDist = c.dist(a);
+    std::size_t bDist = c.dist(b);
+
+    return aDist < bDist;
+  }
+
+private:
+  // The destination cube which the arguments will be compared to so as to determine ordering.
+  Cube c;
+};
+
+struct CubeHash {
+  std::size_t operator()(const Cube &c) {
+    std::hash<uint8_t> hash;
+    std::size_t hashValue = 17;
+    for (const auto &face : c.grid)
+      for (const auto &row : face)
+        for (const auto &cell : row)
+          hashValue = hashValue * 31 + hash(static_cast<uint8_t>(cell));
+
+    std::cout << "Got hash value: " << hashValue << '\n';
+
+    return hashValue;
+  }
+};
+
+std::vector<Cube> Cube::solve() {
+  std::priority_queue<Cube, std::vector<Cube>, CubeCompare> work;
+  std::unordered_map<Cube, std::pair<Cube, uint16_t>, CubeHash> cameFrom;
+  std::unordered_map<Cube, std::size_t, CubeHash> cost;
+
+  return {}; // TODO Return result.
+}
+
+bool Cube::operator==(const Cube &other) {
+  for (std::size_t f = 0; f < faceCount; ++f)
+    for (std::size_t i = 0; i < sideLength; ++i)
+      for (std::size_t j = 0; j < sideLength; ++j)
+        if (grid[f][i][j] != other.grid[f][i][j])
+          return false;
+  return true;
+}
+
+std::size_t Cube::dist(const Cube &other) const {
+  std::size_t dist = 0;
+  for (std::size_t f = 0; f < faceCount; ++f)
+    for (std::size_t i = 0; i < sideLength; ++i)
+      for (std::size_t j = 0; j < sideLength; ++j)
+        if (grid[f][i][j] != other.grid[f][i][j])
+          ++dist;
+  return dist;
+}
+
 const ColorMap Cube::colorMap {
   {WHITE, color(255, 255, 255)},
   {BLUE, color(0, 0, 255)},
