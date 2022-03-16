@@ -1,4 +1,4 @@
-#RBKSCB
+# RBKSCB
 
 This is a Rubik's cube simulator written mostly to get myself to play with OpenGL again after a long time.
 
